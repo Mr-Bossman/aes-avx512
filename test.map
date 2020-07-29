@@ -157,7 +157,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x0000000000001060      0x3e1
+.text           0x0000000000001060      0x5c1
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -171,22 +171,23 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
  .text          0x000000000000113b        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
  *fill*         0x000000000000113b        0x5 
  .text          0x0000000000001140       0xb5 /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o
- .text          0x00000000000011f5      0x1b0 aes.o
-                0x00000000000011f5                aes
- .text          0x00000000000013a5       0x36 test.o
- *fill*         0x00000000000013db        0x5 
- .text          0x00000000000013e0       0x61 //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x00000000000013e0                __libc_csu_init
-                0x0000000000001440                __libc_csu_fini
- .text          0x0000000000001441        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
- .text          0x0000000000001441        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+ .text          0x00000000000011f5      0x387 aes.o
+                0x00000000000011f5                aes2
+                0x00000000000013cb                aes
+ .text          0x000000000000157c       0x36 test.o
+ *fill*         0x00000000000015b2        0xe 
+ .text          0x00000000000015c0       0x61 //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x00000000000015c0                __libc_csu_init
+                0x0000000000001620                __libc_csu_fini
+ .text          0x0000000000001621        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
+ .text          0x0000000000001621        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
  *(.gnu.warning)
 
-.fini           0x0000000000001444        0x9
+.fini           0x0000000000001624        0x9
  *(SORT_NONE(.fini))
- .fini          0x0000000000001444        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
-                0x0000000000001444                _fini
- .fini          0x0000000000001448        0x5 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+ .fini          0x0000000000001624        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
+                0x0000000000001624                _fini
+ .fini          0x0000000000001628        0x5 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
                 [!provide]                        PROVIDE (__etext = .)
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
@@ -205,27 +206,27 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000002268       0x4c
+.eh_frame_hdr   0x0000000000002268       0x54
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000002268       0x4c /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame_hdr  0x0000000000002268       0x54 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
                 0x0000000000002268                __GNU_EH_FRAME_HDR
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x00000000000022b8      0x158
+.eh_frame       0x00000000000022c0      0x178
  *(.eh_frame)
- .eh_frame      0x00000000000022b8       0x30 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x00000000000022c0       0x30 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
                                          0x2c (size before relaxing)
- *fill*         0x00000000000022e8        0x0 
- .eh_frame      0x00000000000022e8       0x40 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
- .eh_frame      0x0000000000002328       0x18 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
+ *fill*         0x00000000000022f0        0x0 
+ .eh_frame      0x00000000000022f0       0x40 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x0000000000002330       0x18 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o
                                          0x30 (size before relaxing)
- .eh_frame      0x0000000000002340       0x20 aes.o
-                                         0x38 (size before relaxing)
- .eh_frame      0x0000000000002360       0x50 test.o
+ .eh_frame      0x0000000000002348       0x40 aes.o
+                                         0x58 (size before relaxing)
+ .eh_frame      0x0000000000002388       0x50 test.o
                                          0x68 (size before relaxing)
- .eh_frame      0x00000000000023b0       0x5c //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x00000000000023d8       0x5c //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x000000000000240c        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
+ .eh_frame      0x0000000000002434        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
  *(.eh_frame.*)
 
 .gcc_except_table

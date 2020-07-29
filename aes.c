@@ -32,6 +32,78 @@ static const uint8_t sbox[256] = {
 #define getSBoxValue(num) (sbox[(num)])
 
 
+extern __m512i aes2(__m512i s,__m512i key)
+{
+	alignas(64) uint8_t state[4][4][4];
+	_mm512_store_epi32(state[0][0],s);
+	alignas(64) uint8_t a[4][4][4];
+
+	const uint8_t U8_INV_FISRT_BIT_MASK[64] = {[0 ... 63] = 0xFE };//mask2
+	const uint8_t COEFF[64] = {[0] = 0x1b,[8] = 0x1b,[16] = 0x1b,[24] = 0x1b,[32] = 0x1b,[40] = 0x1b,[48] = 0x1b,[56] = 0x1b};//mul
+	const uint8_t U8_FISRT_BIT_MASK[64] = {[0 ... 63] = 0x01 };//mask
+	const uint32_t U32_FISRT_BYTE_MASK[16] = {[0 ... 15] = 0x000000FF };//mask3
+	const uint32_t left1[16] = {0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08};//left
+	const uint32_t right1[16] = {0x00,0x08,0x10,0x18,0x00,0x08,0x10,0x18,0x00,0x08,0x10,0x18,0x00,0x08,0x10,0x18};//right
+	__m512i mask2 = _mm512_load_epi32 (U8_INV_FISRT_BIT_MASK);
+	__m512i mul = _mm512_load_epi32 (COEFF);
+	__m512i mask = _mm512_load_epi32 (U8_FISRT_BIT_MASK);
+	__m512i mask3 = _mm512_load_epi32 (U32_FISRT_BYTE_MASK);
+	__m512i left = _mm512_load_epi32 (left1);
+	__m512i right = _mm512_load_epi32 (right1);
+
+
+  	for (uint8_t t = 0; t < 4; ++t)
+  		for (uint8_t i = 0; i < 4; ++i)
+   	 		for (uint8_t j = 0; j < 4; ++j)
+     				 a[t][i][j] = getSBoxValue(state[t][j][i]); // substitute and swap columbs and rows
+
+
+	__m512i in1 = _mm512_load_epi32 (a[0][0]);
+	__m512i mix_left = _mm512_sllv_epi32(in1,left);
+	__m512i mix_right = _mm512_srlv_epi32(in1,right);
+	__m512i rotated = _mm512_or_si512(mix_right,mix_left);
+	_mm512_store_epi32(a[0][0],rotated);
+
+
+  	for (uint8_t t = 0; t < 4; ++t)
+		for(int x = 0; x < 4;x++)
+			for(int y = 0; y < 4;y++)
+				state[t][y][x] = a[t][x][y]; // unswap colimbs and rows
+
+
+	__m512i in = _mm512_load_epi32 (state[0][0]);
+	__m512i in_shiftR_8 = _mm512_srli_epi32(in,8);
+	__m512i xor2 = _mm512_xor_si512(in_shiftR_8,in);
+	__m512i in_shiftR_16 = _mm512_srli_epi32(in,16);
+	__m512i xor1 = _mm512_xor_si512(in_shiftR_16,xor2);
+	__m512i in_shiftR_24 = _mm512_srli_epi32(in,24);
+	__m512i xor = _mm512_xor_si512(xor1,in_shiftR_24);
+
+	__m512i xor_byte = _mm512_and_si512(xor,mask3); // make byte
+	__m512i xor_byte_coeff = _mm512_mullo_epi32(xor_byte,mask); 
+
+	__m512i in_shiftL_24 = _mm512_slli_epi32(in,24);
+	__m512i in_rotL_8 = _mm512_or_si512(in_shiftR_8,in_shiftL_24);
+	
+	__m512i Tm  = _mm512_xor_si512(in_rotL_8,in);
+
+
+
+	__m512i in_shiftR_7 = _mm512_srli_epi32(Tm,7);
+	__m512i in_shiftR_7_BYTE = _mm512_and_si512(in_shiftR_7,mask);
+	__m512i mul_1b = _mm512_mullo_epi32(in_shiftR_7_BYTE,mul);
+
+	__m512i in_shiftL_1 = _mm512_slli_epi32(Tm,1);
+	__m512i in_shiftL_1_BYTE = _mm512_and_si512(in_shiftL_1,mask2);
+
+	__m512i xtime = _mm512_xor_si512(mul_1b,in_shiftL_1_BYTE);
+	__m512i tmp = _mm512_xor_si512(xor_byte_coeff,xtime);
+	__m512i matrix_multiply = _mm512_xor_si512(tmp,in);
+	return _mm512_xor_si512(key,matrix_multiply);
+}
+
+
+
 extern void aes(_512_state* state,_512_key *k)
 {
 	__m512i key = _mm512_load_epi32 (k);
@@ -71,17 +143,17 @@ extern void aes(_512_state* state,_512_key *k)
 
 
 	__m512i in = _mm512_load_epi32 ((*state)[0][0]);
-	__m512i in_shiftL_8 = _mm512_srli_epi32(in,8);
-	__m512i xor2 = _mm512_xor_si512(in_shiftL_8,in);
-	__m512i in_shiftL_16 = _mm512_srli_epi32(in,16);
-	__m512i xor1 = _mm512_xor_si512(in_shiftL_16,xor2);
-	__m512i in_shiftL_24 = _mm512_slli_epi32(in,24);
-	__m512i xor = _mm512_xor_si512(xor1,in_shiftL_24);
+	__m512i in_shiftR_8 = _mm512_srli_epi32(in,8);
+	__m512i xor2 = _mm512_xor_si512(in_shiftR_8,in);
+	__m512i in_shiftR_16 = _mm512_srli_epi32(in,16);
+	__m512i xor1 = _mm512_xor_si512(in_shiftR_16,xor2);
+	__m512i in_shiftR_24 = _mm512_srli_epi32(in,24);
+	__m512i xor = _mm512_xor_si512(xor1,in_shiftR_24);
 
 	__m512i xor_byte = _mm512_and_si512(xor,mask3); // make byte
 	__m512i xor_byte_coeff = _mm512_mullo_epi32(xor_byte,mask); 
 
-	__m512i in_shiftR_8 = _mm512_srli_epi32(in,8);
+	__m512i in_shiftL_24 = _mm512_slli_epi32(in,24);
 	__m512i in_rotL_8 = _mm512_or_si512(in_shiftR_8,in_shiftL_24);
 	
 	__m512i Tm  = _mm512_xor_si512(in_rotL_8,in);
@@ -101,6 +173,5 @@ extern void aes(_512_state* state,_512_key *k)
 	__m512i ret = _mm512_xor_si512(key,matrix_multiply);
 	_mm512_store_epi32((*state)[0][0],ret);
 }
-
 
 
