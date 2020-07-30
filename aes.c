@@ -91,7 +91,7 @@ extern __m512i aes2(__m512i s,__m512i key)
 
 	__m512i in_shiftR_7 = _mm512_srli_epi32(Tm,7);
 	__m512i in_shiftR_7_BYTE = _mm512_and_si512(in_shiftR_7,mask);
-	__m512i mul_1b = _mm512_mullo_epi32(in_shiftR_7_BYTE,mul);
+	__m512i mul_1b = _mm512_mullo_epi64(in_shiftR_7_BYTE,mul);
 
 	__m512i in_shiftL_1 = _mm512_slli_epi32(Tm,1);
 	__m512i in_shiftL_1_BYTE = _mm512_and_si512(in_shiftL_1,mask2);
@@ -162,7 +162,7 @@ extern void aes(_512_state* state,_512_key *k)
 
 	__m512i in_shiftR_7 = _mm512_srli_epi32(Tm,7);
 	__m512i in_shiftR_7_BYTE = _mm512_and_si512(in_shiftR_7,mask);
-	__m512i mul_1b = _mm512_mullo_epi32(in_shiftR_7_BYTE,mul);
+	__m512i mul_1b = _mm512_mullo_epi64(in_shiftR_7_BYTE,mul);
 
 	__m512i in_shiftL_1 = _mm512_slli_epi32(Tm,1);
 	__m512i in_shiftL_1_BYTE = _mm512_and_si512(in_shiftL_1,mask2);
