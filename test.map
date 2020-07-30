@@ -157,7 +157,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x0000000000001060      0x641
+.text           0x0000000000001060      0x661
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -170,23 +170,23 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
  .text          0x00000000000011bb        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
  *fill*         0x00000000000011bb        0x5 
  .text          0x00000000000011c0       0xb5 /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o
- .text          0x0000000000001275      0x387 aes.o
+ .text          0x0000000000001275      0x3aa aes.o
                 0x0000000000001275                aes2
-                0x000000000000144b                aes
- .text          0x00000000000015fc       0x36 test.o
- *fill*         0x0000000000001632        0xe 
- .text          0x0000000000001640       0x61 //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x0000000000001640                __libc_csu_init
-                0x00000000000016a0                __libc_csu_fini
- .text          0x00000000000016a1        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
- .text          0x00000000000016a1        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+                0x000000000000146e                aes
+ .text          0x000000000000161f       0x36 test.o
+ *fill*         0x0000000000001655        0xb 
+ .text          0x0000000000001660       0x61 //usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x0000000000001660                __libc_csu_init
+                0x00000000000016c0                __libc_csu_fini
+ .text          0x00000000000016c1        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o
+ .text          0x00000000000016c1        0x0 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
  *(.gnu.warning)
 
-.fini           0x00000000000016a4        0x9
+.fini           0x00000000000016c4        0x9
  *(SORT_NONE(.fini))
- .fini          0x00000000000016a4        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
-                0x00000000000016a4                _fini
- .fini          0x00000000000016a8        0x5 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+ .fini          0x00000000000016c4        0x4 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o
+                0x00000000000016c4                _fini
+ .fini          0x00000000000016c8        0x5 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
                 [!provide]                        PROVIDE (__etext = .)
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)

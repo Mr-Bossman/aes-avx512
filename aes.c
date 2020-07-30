@@ -39,7 +39,7 @@ extern __m512i aes2(__m512i s,__m512i key)
 	alignas(64) uint8_t a[4][4][4];
 
 	const uint8_t U8_INV_FISRT_BIT_MASK[64] = {[0 ... 63] = 0xFE };//mask2
-	const uint8_t COEFF[64] = {[0] = 0x1b,[8] = 0x1b,[16] = 0x1b,[24] = 0x1b,[32] = 0x1b,[40] = 0x1b,[48] = 0x1b,[56] = 0x1b};//mul
+	const uint8_t COEFF[64] = {[0] = 0x1b,[4] = 0x1b,[8] = 0x1b,[16] = 0x1b,[20] = 0x1b,[24] = 0x1b,[28] = 0x1b,[32] = 0x1b,[36] = 0x1b,[40] = 0x1b,[44] = 0x1b,[48] = 0x1b,[52] = 0x1b,[56] = 0x1b,[60] = 0x1b};//mul
 	const uint8_t U8_FISRT_BIT_MASK[64] = {[0 ... 63] = 0x01 };//mask
 	const uint32_t U32_FISRT_BYTE_MASK[16] = {[0 ... 15] = 0x000000FF };//mask3
 	const uint32_t left1[16] = {0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08,0x00,0x18,0x10,0x08};//left
@@ -91,7 +91,7 @@ extern __m512i aes2(__m512i s,__m512i key)
 
 	__m512i in_shiftR_7 = _mm512_srli_epi32(Tm,7);
 	__m512i in_shiftR_7_BYTE = _mm512_and_si512(in_shiftR_7,mask);
-	__m512i mul_1b = _mm512_mullo_epi64(in_shiftR_7_BYTE,mul);
+	__m512i mul_1b = _mm512_mullo_epi32(in_shiftR_7_BYTE,mul);
 
 	__m512i in_shiftL_1 = _mm512_slli_epi32(Tm,1);
 	__m512i in_shiftL_1_BYTE = _mm512_and_si512(in_shiftL_1,mask2);
@@ -162,7 +162,7 @@ extern void aes(_512_state* state,_512_key *k)
 
 	__m512i in_shiftR_7 = _mm512_srli_epi32(Tm,7);
 	__m512i in_shiftR_7_BYTE = _mm512_and_si512(in_shiftR_7,mask);
-	__m512i mul_1b = _mm512_mullo_epi64(in_shiftR_7_BYTE,mul);
+	__m512i mul_1b = _mm512_mullo_epi32(in_shiftR_7_BYTE,mul);
 
 	__m512i in_shiftL_1 = _mm512_slli_epi32(Tm,1);
 	__m512i in_shiftL_1_BYTE = _mm512_and_si512(in_shiftL_1,mask2);
